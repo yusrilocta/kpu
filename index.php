@@ -46,7 +46,7 @@ https://templatemo.com/tm-535-softy-pinko
                             <li><a href="#testimonials">Testimonials</a></li>
                             <li><a href="#pricing-plans">Pricing Tables</a></li>
                             <li><a href="/kpu/admin">Login Admin</a></li>
-                            <li><a href="/kpps">Login KPPS</a></li>
+                            <li><a href="/kpu/kpps">Login KPPS</a></li>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>

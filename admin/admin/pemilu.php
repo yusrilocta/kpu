@@ -379,7 +379,7 @@ if($ttpt < $ttdt){ ?>
                                 <option value="<?php echo $data['id']?>"><?php echo $data['kec'].' Desa : '.$data['desa'].' TPS : '.$data['notps']?></option>
                                 <?php } ?>
                             </select>
-                            </div>
+                    </div>
                             <div class='mb-3'>
                             <label for="id_calon" class="form-label">Pilih Calon</label>
                             <select for="id_calon" class="form-select" aria-label="Default select example" id="id_calon" name="id_calon" required>

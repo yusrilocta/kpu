@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Login berhasil
         $_SESSION['username'] = $username;
         $_SESSION['role'] = $role;
-        header("Location: kpps/dashboard.php"); // Ganti dengan halaman dashboard yang sesuai
+        header("Location: kpps/index.php"); // Ganti dengan halaman dashboard yang sesuai
         exit();
     } else {
         // Login gagal
-        header("Location:index.php.php?error=1");
+        header("Location:../index.php.php?error=1");
         exit();
     }
 }
