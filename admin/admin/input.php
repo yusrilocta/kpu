@@ -235,10 +235,10 @@ if (!isset($_SESSION['username'])) {
                         echo "<td>{$data['kec']}</td>";
                         echo "<td>{$data['desa']}</td>";
                         echo "<td>{$data['notps']}</td>";
-                        echo "<input type='text'class='form-control' value='{$data['id']}' name='id_tps[]'>";
+                        echo "<input type='hidden'class='form-control' value='{$data['id']}' name='id_tps[]'>";
                         foreach ($calonData as $calon) {
                            // echo "<td>{$calon['nama']}</td>";
-                            echo "<input type='text'class='form-control' value='{$calon['id']}' name='id_calon[]'>";
+                            echo "<input type='hidden'class='form-control' value='{$calon['id']}' name='id_calon[]'>";
                             
                         }
                         // Tambahkan input form untuk id_partai, peml, dan pemp dengan nilai awal

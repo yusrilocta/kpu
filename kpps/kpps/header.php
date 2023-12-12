@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -46,18 +47,28 @@
         </svg>
       </div>
       <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
-        <li class="nav-item"><a class="nav-link" href="index.html">
+        <li class="nav-item"><a class="nav-link" href="index.php">
             <svg class="nav-icon">
               <use xlink:href="asset/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
             </svg> Dashboard<span class="badge badge-sm bg-info ms-auto">NEW</span></a></li>
-        <li class="nav-title">Theme</li>
-        <li class="nav-item"><a class="nav-link" href="colors.html">
+        <li class="nav-title">Data</li>
+        <li class="nav-item"><a class="nav-link" href="calon.php">
             <svg class="nav-icon">
               <use xlink:href="asset/vendors/@coreui/icons/svg/free.svg#cil-drop"></use>
-            </svg> Colors</a></li>
+            </svg> Data Calon</a></li>
+            <li class="nav-item"><a class="nav-link" href="tps.php">
+            <svg class="nav-icon">
+              <use xlink:href="asset/vendors/@coreui/icons/svg/free.svg#cil-drop"></use>
+            </svg> Data TPS</a></li>
+            <li class="nav-title">Input Data</li>
+        <li class="nav-item"><a class="nav-link" href="pemilu.php">
+            <svg class="nav-icon">
+              <use xlink:href="asset/vendors/@coreui/icons/svg/free.svg#cil-drop"></use>
+            </svg>Pemilu</a></li>
       </ul>
       <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
     </div>
+
     <!-- BATAS SIDEBAR DAN NAVBAR -->
     <div class="wrapper d-flex flex-column min-vh-100 bg-light">
       <header class="header header-sticky mb-4">
@@ -135,3 +146,4 @@
             </li>
           </ul>
         </div>
+      </header>
