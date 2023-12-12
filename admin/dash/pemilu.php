@@ -128,8 +128,8 @@ $calon = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <div class="card-body">
     <h5 class="card-title">Pemilih</h5>
     <?php foreach ($datd as $row) { ?>
-    <h1 class="card-text"><?php echo $row['total_perempuan']; ?></h1>
-    <?php $ttpp = $row['total_perempuan']; } ?>
+    <h1 class="card-text"><?php echo $row['total_pemilu']; ?></h1>
+    <?php $ttpp = $row['total_pemilu']; } ?>
   </div>
 </div>
         </div>

@@ -1,4 +1,4 @@
-<?php include 'admin/admin/koneksi.php'; ?>
+<?php include 'admin/koneksi.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -100,15 +100,30 @@ https://templatemo.com/tm-535-softy-pinko
                             </div>
                         </div>
                         <!-- ***** Features Small Item End ***** -->
+                       <?php $quers = "SELECT COUNT(*) AS jumlah_data FROM tps";
 
+$stmt = $conn->query($quers);
+$daty = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$quers = "SELECT SUM(pemilu.pemp) AS total_laki, SUM(pemilu.peml) AS total_perempuan,
+SUM(pemilu.pemp) + SUM(pemilu.peml) AS total_pemilu
+FROM pemilu";
+
+$stmt = $conn->query($quers);
+$datd = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
                         <!-- ***** Features Small Item Start ***** -->
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.6s">
                             <div class="features-small-item">
                                 <div class="icon">
                                     <i><img src="assets/images/featured-item-01.png" alt=""></i>
                                 </div>
-                                <h5 class="features-title">6 TPS</h5>
-                                <p>1440 Pemilih</p>
+                                <?php foreach ($daty as $row) { ?>
+                                <h5 class="features-title">Total <?php echo $row['jumlah_data']; ?> TPS</h5>
+                                <?php } ?>
+                                <?php foreach ($datd as $row) { ?>
+                                <h5>pemilih mencoblos : <?php echo $row['total_pemilu']; ?></h5>
+                                <?php } ?>
                             </div>
                         </div>
                         <!-- ***** Features Small Item End ***** -->
@@ -116,106 +131,73 @@ https://templatemo.com/tm-535-softy-pinko
                 </div>
             </div>
         </div>
-    </section>
-    <!-- ***** Home Parallax Start ***** -->
-    <section class="mini" id="work-process">
-        <div class="mini-content">
-            <div class="container">
-                <div class="row">
-                    <div class="offset-lg-3 col-lg-6">
-                        <div class="info">
-                            <h1>Work Process</h1>
-                            <p>Aenean nec tempor metus. Maecenas ligula dolor, commodo in imperdiet interdum, vehicula ut ex. Donec ante diam.</p>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- ***** Mini Box Start ***** -->
-                <div class="row">
-                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-                        <a href="#" class="mini-box">
-                            <i><img src="assets/images/work-process-item-01.png" alt=""></i>
-                            <strong>Get Ideas</strong>
-                            <span>Godard pabst prism fam cliche.</span>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-                        <a href="#" class="mini-box">
-                            <i><img src="assets/images/work-process-item-01.png" alt=""></i>
-                            <strong>Sketch Up</strong>
-                            <span>Godard pabst prism fam cliche.</span>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-                        <a href="#" class="mini-box">
-                            <i><img src="assets/images/work-process-item-01.png" alt=""></i>
-                            <strong>Discuss</strong>
-                            <span>Godard pabst prism fam cliche.</span>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-                        <a href="#" class="mini-box">
-                            <i><img src="assets/images/work-process-item-01.png" alt=""></i>
-                            <strong>Revise</strong>
-                            <span>Godard pabst prism fam cliche.</span>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-                        <a href="#" class="mini-box">
-                            <i><img src="assets/images/work-process-item-01.png" alt=""></i>
-                            <strong>Approve</strong>
-                            <span>Godard pabst prism fam cliche.</span>
-                        </a>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-                        <a href="#" class="mini-box">
-                            <i><img src="assets/images/work-process-item-01.png" alt=""></i>
-                            <strong>Launch</strong>
-                            <span>Godard pabst prism fam cliche.</span>
-                        </a>
-                    </div>
-                </div>
-                <!-- ***** Mini Box End ***** -->
-            </div>
+        <div class="container mt-5">
+            <!-- Tampilkan tabel dengan data pemilu -->
+            <table class="table table-striped" id="table table-striped datra">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th class="d-none d-sm-table-cell">TPS</th>
+                    <th>Nama Calon</th>
+                    <th class="d-none d-sm-table-cell">Partai</th>
+                    <th class="d-none d-sm-table-cell">Pemilih laki-Laki</th>
+                    <th class="d-none d-sm-table-cell">Pemilih Perempuan</th>
+                    <th>Total</th>
+                    <!-- <th>Aksi</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+
+                // Fungsi untuk mendapatkan semua data pemilu
+                function getPemilu($conn) {
+                    if (isset($_POST['filter']) && isset($_POST['filter_nama'])){
+                        $filter_nama = $_POST['filter_nama'];
+                        $query = "SELECT pemilu.id, pemilu.id_tps, tps.desa, tps.kec, tps.notps,pemilu.id_calon, calon.nama_calon,calon.nama_partai, pemilu.pemp, pemilu.peml,total
+                                    FROM pemilu
+                                    INNER JOIN tps ON pemilu.id_tps = tps.id
+                                    INNER JOIN calon ON pemilu.id_calon = calon.id
+                                    WHERE calon.id = :filter_nama"; // Gunakan parameter untuk menghindari SQL injection
+                        $stmt = $conn->prepare($query);
+                        $stmt->bindParam(':filter_nama', $filter_nama, PDO::PARAM_INT); // Sesuaikan tipe datanya dengan kolom di database
+                        $stmt->execute();
+                        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    } else {
+                        $query = "SELECT pemilu.id, pemilu.id_tps, tps.desa, tps.kec, tps.notps, pemilu.id_calon, calon.nama_calon,calon.nama_partai, pemilu.pemp, pemilu.peml,total
+                                    FROM pemilu
+                                    INNER JOIN tps ON pemilu.id_tps = tps.id
+                                    INNER JOIN calon ON pemilu.id_calon = calon.id";
+                        $stmt = $conn->query($query);
+                        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    }
+                }
+                                // Menampilkan data pemilu dalam tabel
+                                $pemilu = getPemilu($conn);
+                                foreach ($pemilu as $data) {
+                                    echo "<tr id='datras'>";
+                                    echo "<td>{$data['id']}</td>";
+                                    echo "<td class='d-none d-sm-table-cell'>{$data['kec']} Desa {$data['desa']} No TPS : {$data['notps']}</td>";
+                                    echo "<td >{$data['nama_calon']}</td>";
+                                    echo "<td class='d-none d-sm-table-cell'>{$data['nama_partai']}</td>";
+                                    echo "<td class='d-none d-sm-table-cell'>{$data['peml']}</td>";
+                                    echo "<td class='d-none d-sm-table-cell'>{$data['pemp']}</td>";
+                                    echo "<td>{$data['total']}</td>";
+                                    // echo "<td>";
+                                    // echo "<button type='button' class='btn btn-sm btn-primary' data-bs-toggle='modal' data-bs-target='#editPemiluModal{$data['id']}'>Edit</button>";
+                                    // echo "<form method='POST' class='d-inline-block' onsubmit=\"return confirm('Apakah Anda yakin ingin menghapus pemilu ini?');\">";
+                                    // echo "<input type='hidden' name='id' value='{$data['id']}'>";
+                                    // echo "<button type='submit' class='btn btn-sm btn-danger' name='delete_pemilu'>Hapus</button>";
+                                    // echo "</form>";
+                                    // echo "</td>";
+                                    echo "</tr>";
+                                }
+                ?>
+            </tbody>
+            </table>
         </div>
     </section>
-    <!-- ***** Home Parallax End ***** -->
 
-    <!-- ***** Counter Parallax Start ***** -->
-    <section class="counter">
-        <div class="content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="count-item decoration-bottom">
-                            <strong>126</strong>
-                            <span>Projects</span>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="count-item decoration-top">
-                            <strong>63</strong>
-                            <span>Happy Clients</span>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="count-item decoration-bottom">
-                            <strong>18</strong>
-                            <span>Awards Wins</span>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="count-item">
-                            <strong>27</strong>
-                            <span>Countries</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ***** Counter Parallax End ***** -->   
-    <!-- ***** Footer Start ***** -->
     <footer>
         <div class="container">
             <div class="row">
@@ -231,7 +213,7 @@ https://templatemo.com/tm-535-softy-pinko
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <p class="copyright">Copyright &copy; 2020 Softy Pinko Company - Design: TemplateMo</p>
+                    <p class="copyright">Copyright &copy; 2023 KPU Baturaja</p>
                 </div>
             </div>
         </div>
@@ -312,7 +294,7 @@ var statusElement = document.getElementById('status');
 var pemilu = data[0].total_pemilu;
 var tps = data[1].total_pemilih;
 
-if (pemilu < tps ) {
+if (pemilu > tps ) {
     statusElement.textContent = 'Dipertanyakan!';
 } else {
     statusElement.textContent = 'Layak';
